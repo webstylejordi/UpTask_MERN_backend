@@ -40,22 +40,23 @@ const Registrar = () => {
 
     //Crear el usuario en la API 
      try {
-     //      const url =  'http://localhost:4000/api/usuarios'
-     //      const respuesta  = await fetch( url, {
-     //           method:"POST",
-     //           body: {
-     //                nombre,
-     //                email,
-     //                password,
-     //           }
-     //      })
-     //    console.log(respuesta)
-        const respuesta = await axios.post('http://localhost:4000/api/usuarios',
+        const  {data} = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/usuarios`,
          {nombre, email, password}) ;
-          console.log(respuesta);
+       
+          setAlerta({
+               msg : data.msg,
+               error : false
+          }) 
+          setNombre('');
+          setEmail('');
+          setPassword('');
+          setRepetirPassword('')
 
      } catch (error) {
-        console.log(error)
+          setAlerta({
+               msg : error.response.data.msg,
+               error : true
+          })
      }
   }
 

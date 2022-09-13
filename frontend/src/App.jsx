@@ -6,6 +6,7 @@ import OlvidePassword from './paginas/OlvidePassword'
 import NuevoPassword from './paginas/NuevoPassword'
 import ConfirmarCuenta from './paginas/ConfirmarCuenta'
 
+console.log(import.meta.env.VITE_BACKEND_URL)
 
 function App() {
    
