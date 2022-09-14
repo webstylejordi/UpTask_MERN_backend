@@ -1,6 +1,7 @@
 import Usuario from "../models/Usuario.js";
 import generarId from "../helpers/generarId.js";
 import generarJWT from "../helpers/generarJWT.js";
+import {emailRegistro} from "../helpers/emails.js"
 
 const registrar = async (req,res) => {
      //evitar registros duplicados
@@ -17,6 +18,14 @@ const registrar = async (req,res) => {
           const usuario = new Usuario(req.body);
           usuario.token = generarId();
           await usuario.save();
+
+          //enviar email de confirmación 
+          emailRegistro({
+               email: usuario.email,
+               nombre : usuario.nombre ,
+               token : usuario.token
+          })
+
           res.json({msg: "usuario creado correctamente. Revisa tu eamil para confirmar tu cuenta"});
 
      } catch (error) {
@@ -60,7 +69,7 @@ const confirmar = async (req,res) =>  {
      const usuarioConfirmar = await Usuario.findOne({token});
 
      if(!usuarioConfirmar) {
-          const error = new Error('Token error, usuario no validado');
+          const error = new Error('Token no válido');
           return res.status(403).json({msg: error.message})
      }
 
