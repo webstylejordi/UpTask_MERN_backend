@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Link } from "react-router-dom"
 import Alerta from "../components/Alerta";
 import axios from "axios";
-import { Url } from "url";
+ 
 
 const Registrar = () => {
  
@@ -40,6 +40,7 @@ const Registrar = () => {
 
     //Crear el usuario en la API 
      try {
+          //TODO: mover hacia un clinte AXIOS
         const  {data} = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/usuarios`,
          {nombre, email, password}) ;
        
