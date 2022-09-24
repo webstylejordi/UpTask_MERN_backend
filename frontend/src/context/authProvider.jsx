@@ -13,7 +13,7 @@ const AuthProvider = ({children}) => {
      useEffect(() => {
           const autenticarUsuario = async () => {
                const token  = localStorage.getItem('token')
-               console.log(token)
+            
                if(!token) {
                     setCargando(false)
                     return
@@ -34,8 +34,8 @@ const AuthProvider = ({children}) => {
                     
                } catch (error) {
                     setAuth({})
-                    console.log('aqui')
-                    console.log(error)
+                 
+                     
                } finally {
                     setCargando(false)
                }

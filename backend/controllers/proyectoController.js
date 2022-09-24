@@ -35,8 +35,8 @@ const obtenerProyecto = async (req,res) => {
        };
 
       //obtener las tareas del proyecto
-      const tareas  = await  Tarea.find().where("proyecto").equals(proyecto._id);
-      res.json(tareas)
+    // const tareas  = await  Tarea.find().where("proyecto").equals(proyecto._id);
+      res.json(proyecto)
 
      };
 
