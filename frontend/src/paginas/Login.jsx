@@ -12,6 +12,8 @@ const Login = () => {
 
      const  {setAuth} = useAuth();
 
+     const navigate = useNavigate();
+
      const handleSubmit = async e => {
            e.preventDefault();
 
@@ -28,7 +30,8 @@ const Login = () => {
                setAlerta({})
                localStorage.setItem('token',data.token)   
 
-            //   setAuth(data)
+             setAuth(data)
+             navigate("/proyectos")
 
                
            } catch (error) {

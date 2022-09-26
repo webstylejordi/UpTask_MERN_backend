@@ -10,6 +10,7 @@ const ProyectosProvider = ({children}) => {
      const [alerta, setAlerta] = useState( {});    
      const [proyecto, setProyecto] = useState({}); 
      const [cargando, setCargando] = useState(false);
+     const [modalFormularioTarea, setModalFormularioTarea] = useState(false);
 
 
      const navigate = useNavigate();
@@ -57,10 +58,7 @@ const ProyectosProvider = ({children}) => {
           } else {
             await nuevoProyecto(proyecto)
           }
-          
-          return 
-
-         
+          return      
      }
 
      const editarProyecto = async proyecto => {
@@ -78,21 +76,27 @@ const ProyectosProvider = ({children}) => {
 
                const  { data } = await clienteAxios.put(`/proyectos/${proyecto.id}`, proyecto, config)
 
-               //TODO sincronizar el estate
+               //*sincronizar el estate
+               
                const proyectosActualizados = proyectos.map(proyectoState => proyectoState._id ===data._id ?data : proyectoState ) 
                setProyectos(proyectosActualizados)
 
-               //TODO actualizar alerta
+               //* actualizar alerta
+
                setAlerta({
                     msg: "proyecto actualizado correctamente",
                     error : false
                })
+
+               //* redirecionar 
+               
                setTimeout(() => {
                     setAlerta({})
                     navigate("/proyectos")
                },3000)
 
-     //TODO redireccoinar 
+           
+
              //  console.log(data)
           } catch (error) {
                console.log(error)
@@ -191,8 +195,34 @@ const ProyectosProvider = ({children}) => {
           } catch (error) {
                console.log(error)
           }
-
      }
+
+     //* tareas ***************************************************************************************************
+
+     const handleModalTarea = () => {
+          setModalFormularioTarea(!modalFormularioTarea)
+     }
+
+     const submitTarea = async tarea => {
+
+          const token = localStorage.getItem('token')
+           try {
+               if (!token) return 
+                
+               const config =  {
+                    headers: {
+                         "Content-Type" : "application/json",
+                         Authorization : `Bearer ${token}`
+                    }
+               }
+               const {data} = await clienteAxios.post('/tareas', tarea, config)
+               console.log(data)
+           } catch (error) {
+               console.log(error)
+           }
+     }
+
+
 
 
      return (
@@ -205,7 +235,10 @@ const ProyectosProvider = ({children}) => {
                     eliminarProyecto,
                     mostrarAlerta,
                     alerta,
-                    cargando
+                    cargando,
+                    modalFormularioTarea,
+                    handleModalTarea,
+                    submitTarea
                }}
           >{children}
           </ProyectosContext.Provider>

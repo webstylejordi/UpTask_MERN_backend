@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.2",
     "axios": "^0.27.2",
     "axioss": "^0.0.1-security",
     "react": "^18.2.0",
