@@ -1,0 +1,41 @@
+import { formatearFecha } from "../helpers/formatearFecha";
+
+const Tarea = ({tarea}) => {
+
+     const {descripcion, nombre, prioridad, fechaEntrega, _id, estado} = tarea;
+
+  return (
+    <div className="border-b p-5 flex justify-between items-center">
+          <div>
+               <p className="mb-1 text-xl font-bold uppercase">{nombre}</p>
+               <p className="mb-1 text-xl text-gray-500 uppercase">{descripcion}</p>
+               <p className="mb-1 text-xl font-bold">{formatearFecha(fechaEntrega)}</p>
+               <p className="mb-1 text-xl text-gray-600">Prioridad : {prioridad}</p>
+          </div>
+
+          <div className="flex gap-2">
+               <button
+                    className="bg-indigo-600 px-4 py-3 text-white uppercase font-bold rounded-lg text-sm"
+               >Editar</button>
+
+               {estado ? (
+                     <button
+                     className="bg-sky-600 px-4 py-3 text-white uppercase font-bold rounded-lg text-sm"
+                >Completa</button>
+               ) : (
+                    <button
+                    className="bg-gray-600 px-4 py-3 text-white uppercase font-bold rounded-lg text-sm"
+               >Incompleta</button>
+
+               )}
+                    <button
+                    className="bg-red-600 px-4 py-3 text-white uppercase font-bold rounded-lg text-sm"
+               >Eliminar</button>
+
+          </div>
+
+    </div>
+  )
+}
+
+export default Tarea

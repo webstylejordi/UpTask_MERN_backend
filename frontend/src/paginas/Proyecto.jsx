@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import {useParams, Link} from 'react-router-dom'
 import useProyectos from '../hooks/useProyectos';
 import ModalFormularioTarea from '../components/ModalForumularioTarea';
+import Tarea from '../components/Tarea';
  
 
 const Proyecto = () => {
@@ -45,6 +46,20 @@ const Proyecto = () => {
                <path strokeLinecap="round" strokeLinejoin="round" 
                d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                Nueva Tarea</button>
+
+               <p className='text-xl font-bold mt-10 '>Tareas del Proyecto</p>
+               <div className='bg-white shadow  mt-10 rounded-lg'>
+
+                    {proyecto.tareas?.length ? 
+                         proyecto.tareas?.map( tarea =>  (
+                              <Tarea
+                              key ={tarea._id}
+                              tarea = {tarea}
+                              />
+                         )): 
+                         <p className='text-center my-5 p-10'> No hay tareas en este proyecto</p>
+                         } 
+               </div>
 
                <ModalFormularioTarea
                     modal={modal}
