@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import {useParams, Link} from 'react-router-dom'
 import useProyectos from '../hooks/useProyectos';
 import ModalFormularioTarea from '../components/ModalForumularioTarea';
+import ModalEliminarTarea from '../components/ModalEliminarTarea';
 import Tarea from '../components/Tarea';
+import Alerta from '../components/Alerta';
  
 
 const Proyecto = () => {
      const params = useParams();
-     const {obtenerProyecto, proyecto, cargando, handleModalTarea} = useProyectos();
-
-     const [modal, setModal] = useState(false);
+     const {obtenerProyecto, proyecto, cargando, handleModalTarea, alerta} = useProyectos();
 
      useEffect(() => {
           obtenerProyecto(params.id)
@@ -18,6 +18,8 @@ const Proyecto = () => {
      const {nombre} = proyecto
      
      if (cargando) return "Cargando..."
+     
+     const {msg} = alerta
       
      return (
           <>
@@ -48,6 +50,13 @@ const Proyecto = () => {
                Nueva Tarea</button>
 
                <p className='text-xl font-bold mt-10 '>Tareas del Proyecto</p>
+
+               <div className='flex justify-center'>
+                    <div className='md:w-1/3 lg:w-1/4 p-3'>
+                         {msg && <Alerta alerta={alerta} /> }
+                    </div>
+               </div>
+              
                <div className='bg-white shadow  mt-10 rounded-lg'>
 
                     {proyecto.tareas?.length ? 
@@ -61,11 +70,18 @@ const Proyecto = () => {
                          } 
                </div>
 
-               <ModalFormularioTarea
-                    modal={modal}
-                    setModal={setModal}
-               />
+               <div className='flex items-center justify-between mt-10'>
+                    <p className='text-xl font-bold mt-10 '>Colaboradores</p>
+                         <Link 
+                              to={`/proyectos/nuevo-colaborador/${proyecto._id}`}
+                         >
+                              Añadir
+                         </Link>
+               </div>
 
+               
+               <ModalFormularioTarea />
+               <ModalEliminarTarea />
           </>
   )
 }

@@ -1,6 +1,12 @@
 import { formatearFecha } from "../helpers/formatearFecha";
+import useProyectos from "../hooks/useProyectos"
 
+
+ 
 const Tarea = ({tarea}) => {
+
+     const {handleModalEditarTarea, handleModalEliminarTarea} = useProyectos();
+
 
      const {descripcion, nombre, prioridad, fechaEntrega, _id, estado} = tarea;
 
@@ -16,6 +22,7 @@ const Tarea = ({tarea}) => {
           <div className="flex gap-2">
                <button
                     className="bg-indigo-600 px-4 py-3 text-white uppercase font-bold rounded-lg text-sm"
+                    onClick={() => handleModalEditarTarea(tarea) }
                >Editar</button>
 
                {estado ? (
@@ -30,6 +37,7 @@ const Tarea = ({tarea}) => {
                )}
                     <button
                     className="bg-red-600 px-4 py-3 text-white uppercase font-bold rounded-lg text-sm"
+                    onClick={() => handleModalEliminarTarea(tarea)}
                >Eliminar</button>
 
           </div>
