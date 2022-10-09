@@ -24,9 +24,9 @@ const NuevoColaborador = () => {
                <FormularioColaborador />
           </div>
 
-          {cargando ? '<p className="text-center">cargando...</p>'  : colaborador?._id &&(
+          {cargando ? <p className="text-center">cargando...</p>  : colaborador?._id &&(
             <div className="justify-center mt-10">
-              <div className="bg-white py-10 px-5 md:w--1/2 rounded-lg shadow">
+              <div className="bg-white py-10 px-5 md:w--1/2 rounded-lg shadow w-full">
                 <h2 className="text-center mb-10 text-2xl font-bold">resultado</h2>
                 <div className="flex justify-between items-center ">
                   <p>{colaborador.nombre}</p>

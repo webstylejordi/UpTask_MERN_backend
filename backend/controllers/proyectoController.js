@@ -8,8 +8,6 @@ const obtenerProyectos = async (req,res) => {
          { creador : {$in : req.usuario} }
       ]
      })
-     .where('creador')
-     .equals(req.usuario)
      .select('-tareas');
      res.json(proyectos)
 }
@@ -30,7 +28,10 @@ const obtenerProyecto = async (req,res) => {
      const {id} = req.params;
      
      const proyecto = await Proyecto.findById(id)
-     .populate('tareas')
+     .populate({
+      path:  "tareas", 
+      populate: {path: "completado", select: "nombre" },
+   })
      .populate('colaboradores', "nombre email")
   
      
@@ -39,10 +40,13 @@ const obtenerProyecto = async (req,res) => {
             return res.status(404).json({msg: error.message})
        }
 
-       if (proyecto.creador.toString() !== req.usuario._id.toString()) {
-          const error = new Error('no tienes los permisos')
-          return res.status(404).json({msg: error.message})
-       };
+       if (proyecto.creador.toString() !== req.usuario._id.toString() && 
+       !proyecto.colaboradores.some(colaborador => colaborador._id.toString() ===
+       req.usuario._id.toString() )
+         ) {
+            const error = new Error('Accion no valida')
+            return res.status(404).json({msg: error.message})
+         };
 
       //obtener las tareas del proyecto
     // const tareas  = await  Tarea.find().where("proyecto").equals(proyecto._id);
@@ -51,9 +55,6 @@ const obtenerProyecto = async (req,res) => {
      };
 
    
-
-
-
 
 const editarProyecto = async (req,res) => {
      const {id} = req.params;

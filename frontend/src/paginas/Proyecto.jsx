@@ -1,28 +1,37 @@
 import { useEffect } from 'react';
 import {useParams, Link} from 'react-router-dom'
 import useProyectos from '../hooks/useProyectos';
+import useAdmin from '../hooks/useAdmin'
 import ModalFormularioTarea from '../components/ModalForumularioTarea';
 import ModalEliminarTarea from '../components/ModalEliminarTarea';
 import Tarea from '../components/Tarea';
 import Alerta from '../components/Alerta';
- 
+import Colaborador from '../components/Colaborador';
+import ModalEliminarColaborador from '../components/ModalElimininarColaborador';
 
 const Proyecto = () => {
      const params = useParams();
      const {obtenerProyecto, proyecto, cargando, handleModalTarea, alerta} = useProyectos();
 
+     const admin = useAdmin();
+     console.log(admin)
+
      useEffect(() => {
           obtenerProyecto(params.id)
      }, []);
+     console.log(proyecto)
 
      const {nombre} = proyecto
      
      if (cargando) return "Cargando..."
      
      const {msg} = alerta
+   
       
-     return (
+     return  (
           <>
+
+          {admin && (
           <div className='flex justify-between'>
                <h1 className='font-black text-4xl'>{nombre}</h1>
                <div className='flex items-center gap-5  text-gray-400 hover:text-black'>
@@ -37,26 +46,25 @@ const Proyecto = () => {
                >Editar</Link>
                </div>
           </div>
-          <button
-               onClick={handleModalTarea}
-               type="button"
-               className='flex gap-2 items-center mt-5 text-sm px-5 py-3 rounded-lg uppercase font-bold text-center
-               w-full md:w-auto bg-sky-400 text-white '
-          >
-               <svg xmlns="http://www.w3.org/2000/svg"   fill="none" viewBox="0 0 24 24" 
-               strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-               <path strokeLinecap="round" strokeLinejoin="round" 
-               d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-               Nueva Tarea</button>
+               )}
+
+               {admin && (
+                     <button
+                     onClick={handleModalTarea}
+                     type="button"
+                     className='flex gap-2 items-center mt-5 text-sm px-5 py-3 rounded-lg uppercase font-bold text-center
+                     w-full md:w-auto bg-sky-400 text-white '
+                >
+                     <svg xmlns="http://www.w3.org/2000/svg"   fill="none" viewBox="0 0 24 24" 
+                     strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                     <path strokeLinecap="round" strokeLinejoin="round" 
+                     d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                     Nueva Tarea</button>
+               )}
+         
 
                <p className='text-xl font-bold mt-10 '>Tareas del Proyecto</p>
 
-               <div className='flex justify-center'>
-                    <div className='md:w-1/3 lg:w-1/4 p-3'>
-                         {msg && <Alerta alerta={alerta} /> }
-                    </div>
-               </div>
-              
                <div className='bg-white shadow  mt-10 rounded-lg'>
 
                     {proyecto.tareas?.length ? 
@@ -69,7 +77,9 @@ const Proyecto = () => {
                          <p className='text-center my-5 p-10'> No hay tareas en este proyecto</p>
                          } 
                </div>
-
+               
+               {admin && (
+               <>
                <div className='flex items-center justify-between mt-10'>
                     <p className='text-xl font-bold mt-10 '>Colaboradores</p>
                          <Link 
@@ -79,9 +89,24 @@ const Proyecto = () => {
                          </Link>
                </div>
 
-               
+               <div className='bg-white shadow  mt-10 rounded-lg'>
+
+                    {proyecto.colaboradores?.length ? 
+                         proyecto.colaboradores?.map( colaborador =>  (
+                             <Colaborador
+                             key={colaborador._id} 
+                             colaborador = {colaborador}
+                             />
+                         )): 
+                    <p className='text-center my-5 p-10'> No hay colaboradores en este proyecto</p>
+                    } 
+               </div>
+                   </> 
+                    )}
+
                <ModalFormularioTarea />
                <ModalEliminarTarea />
+               <ModalEliminarColaborador />
           </>
   )
 }
